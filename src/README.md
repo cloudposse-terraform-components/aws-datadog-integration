@@ -6,7 +6,7 @@ tags:
   - provider/datadog
 ---
 
-# Component: `datadog`
+# Component: `datadog-integration`
 
 This component is responsible for provisioning Datadog AWS integrations. It depends on the `datadog-configuration`
 component to get the Datadog API keys.
