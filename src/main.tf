@@ -10,7 +10,7 @@ data "aws_regions" "all" {
 
 module "datadog_integration" {
   source  = "cloudposse/datadog-integration/aws"
-  version = "1.2.0"
+  version = "1.3.0"
 
   enabled = module.this.enabled && length(var.integrations) > 0
 
