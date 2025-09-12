@@ -13,7 +13,6 @@ component to get the Datadog API keys.
 
 See Datadog's [documentation about provisioning keys](https://docs.datadoghq.com/account_management/api-app-keys) for
 more information.
-
 ## Usage
 
 **Stack Level**: Global
@@ -21,6 +20,7 @@ more information.
 Here's an example snippet for how to use this component. It's suggested to apply this component to all accounts which
 you want to track AWS metrics with DataDog.
 
+<!-- prettier-ignore-start -->
 ```yaml
 components:
   terraform:
@@ -31,9 +31,10 @@ components:
       vars:
         enabled: true
 ```
+<!-- prettier-ignore-end -->
 
-<!-- prettier-ignore-start -->
-<!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
+
+<!-- markdownlint-disable -->
 ## Requirements
 
 | Name | Version |
@@ -106,13 +107,19 @@ components:
 | <a name="output_aws_account_id"></a> [aws\_account\_id](#output\_aws\_account\_id) | AWS Account ID of the IAM Role for the Datadog integration |
 | <a name="output_aws_role_name"></a> [aws\_role\_name](#output\_aws\_role\_name) | Name of the AWS IAM Role for the Datadog integration |
 | <a name="output_datadog_external_id"></a> [datadog\_external\_id](#output\_datadog\_external\_id) | Datadog integration external ID |
-<!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
-<!-- prettier-ignore-end -->
+<!-- markdownlint-restore -->
+
+
 
 ## References
 
-- Datadog's [documentation about provisioning keys](https://docs.datadoghq.com/account_management/api-app-keys)
-- [cloudposse/terraform-aws-components](https://github.com/cloudposse/terraform-aws-components/tree/main/modules/datadog-integration) -
-  Cloud Posse's upstream component
+
+- [Datadog's documentation about provisioning keys](https://docs.datadoghq.com/account_management/api-app-keys) - 
+
+- [cloudposse-terraform-components](https://github.com/orgs/cloudposse-terraform-components/repositories) - Cloud Posse's upstream component
+
+
+
 
 [<img src="https://cloudposse.com/logo-300x69.svg" height="32" align="right"/>](https://cpco.io/homepage?utm_source=github&utm_medium=readme&utm_campaign=cloudposse-terraform-components/aws-datadog-integration&utm_content=)
+
