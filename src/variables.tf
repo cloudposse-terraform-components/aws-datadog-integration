@@ -16,9 +16,16 @@ variable "integrations" {
 }
 
 variable "filter_tags" {
-  type        = list(string)
-  description = "An array of EC2 tags (in the form `key:value`) that defines a filter that Datadog use when collecting metrics from EC2. Wildcards, such as ? (for single characters) and * (for multiple characters) can also be used"
-  default     = []
+  type = list(object({
+    namespace = string
+    tags      = list(string)
+  }))
+  description = <<-EOT
+    A list of objects that filter metrics collection by namespace. Each object has a `namespace` and a
+    list of `tags` in the form `key:value`. Wildcards, such as `?` (for single characters) and `*`
+    (for multiple characters), can also be used in the tags.
+    EOT
+  default     = null
 }
 
 variable "host_tags" {
@@ -38,15 +45,29 @@ variable "included_regions" {
   description = "An array of AWS regions to include in metrics collection"
   default     = []
 }
-variable "account_specific_namespace_rules" {
-  type        = map(string)
-  description = "An object, (in the form {\"namespace1\":true/false, \"namespace2\":true/false} ), that enables or disables metric collection for specific AWS namespaces for this AWS account only"
-  default     = {}
+
+variable "namespace_filters_include_only" {
+  type        = list(string)
+  description = <<-EOT
+    Include only these namespaces for metrics collection. Mutually exclusive with `namespace_filters_exclude_only`.
+    Replaces the removed `account_specific_namespace_rules` input.
+    EOT
+  default     = null
+}
+
+variable "namespace_filters_exclude_only" {
+  type        = list(string)
+  description = <<-EOT
+    Exclude only these namespaces from metrics collection. Mutually exclusive with `namespace_filters_include_only`.
+    If neither is set, the provider defaults to excluding `["AWS/SQS", "AWS/ElasticMapReduce"]`.
+    Replaces the removed `account_specific_namespace_rules` input.
+    EOT
+  default     = null
 }
 
 variable "context_host_and_filter_tags" {
   type        = list(string)
-  description = "Automatically add host and filter tags for these context keys"
+  description = "Automatically add host tags for these context keys (as of module v3.0.0 these are no longer added to `filter_tags`)"
   default     = ["namespace", "tenant", "stage"]
 }
 
@@ -68,13 +89,31 @@ variable "metrics_collection_enabled" {
     EOT
 }
 
-variable "resource_collection_enabled" {
+variable "metrics_automute_enabled" {
   type        = bool
-  default     = null
+  default     = true
+  description = "Enable EC2 automute for AWS metrics"
+}
+
+variable "metrics_collect_cloudwatch_alarms" {
+  type        = bool
+  default     = false
+  description = "Enable CloudWatch alarms collection"
+}
+
+variable "metrics_collect_custom_metrics" {
+  type        = bool
+  default     = false
+  description = "Enable custom metrics collection"
+}
+
+variable "extended_resource_collection_enabled" {
+  type        = bool
+  default     = true
   description = <<-EOT
-    Some Datadog products leverage information about how your AWS resources
-    (such as S3 Buckets, RDS snapshots, and CloudFront distributions) are configured.
-    When `resource_collection_enabled` is `true`, Datadog collects this information
-    by making read-only API calls into your AWS account.
+    Whether Datadog collects additional attributes and configuration information about the resources
+    (such as S3 Buckets, RDS snapshots, and CloudFront distributions) in your AWS account by making
+    read-only API calls. Required for `cspm_resource_collection_enabled`. Replaces the removed
+    `resource_collection_enabled` input.
     EOT
 }
